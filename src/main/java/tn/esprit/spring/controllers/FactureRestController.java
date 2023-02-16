@@ -27,9 +27,9 @@ public class FactureRestController {
 		return FactureImpl.getFacturesByDate(dateFrom, dateTo);
 	}
 
-	@GetMapping("/get-facture-by-commande")
-	public Facture getFactureByCommande(@RequestBody Commande commande){
-		return FactureImpl.getFactureByCommande(commande);
+	@GetMapping("/get-facture-by-commande/{commandeId}")
+	public Facture getFactureByCommande(@PathVariable("commandeId") Integer commandeId){
+		return FactureImpl.getFactureByCommande(commandeId);
 	}
 
 	@GetMapping("/get-facture-by-user")

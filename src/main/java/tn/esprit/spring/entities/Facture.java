@@ -21,7 +21,7 @@ public class Facture implements Serializable {
     private Integer factureId;
 
     @JsonIgnore
-    @ManyToOne()
+    @OneToOne()
     private Commande commandeId;
 
     private LocalDate dateFacturation;

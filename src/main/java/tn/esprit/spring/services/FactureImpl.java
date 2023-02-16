@@ -14,6 +14,7 @@ import tn.esprit.spring.repositories.FactureRepository;
 import tn.esprit.spring.repositories.PaiementRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,16 +38,21 @@ public class FactureImpl implements IFactureService {
 
     @Override
     public List<Facture> getFacturesByDate(String dateFrom, String dateTo){
-        List<Facture> listFactures = null;
-        List<Facture> factureTmp = null;
+        List<Facture> listFactures = new ArrayList<>();
         LocalDate startDate = LocalDate.parse(dateFrom);
         LocalDate endDate = LocalDate.parse(dateTo);
         for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
         {
-            factureTmp = factureRepository.findByDateFacturation(date);
-            for (Facture facture : factureTmp){
-                listFactures.add(facture);
+            log.info(String.valueOf(date));
+            List<Facture> factureTmp = factureRepository.findAllByDateFacturation(date);
+            log.info(String.valueOf(factureTmp.isEmpty()));
+            log.info(factureTmp.toString());
+            if(factureTmp.isEmpty()==false) {
+                for (Facture facture : factureTmp) {
+                    listFactures.add(facture);
+                }
             }
+            factureTmp = null;
         }
         return listFactures;
     }
@@ -57,8 +63,15 @@ public class FactureImpl implements IFactureService {
         return facture;
     }
     @Override
-    public Facture getFactureByCommande(Commande commande){
-        Facture facture = factureRepository.findByCommandeId(commande.getCommandeId());
+    public Facture getFactureByCommande(Integer commandeId){
+        Commande commande = commandeRepository.findById(commandeId).orElse(null);
+        List<Commande> lc = commandeRepository.findAll();
+        log.info(lc.toString());
+        log.info(commandeId.toString());
+        log.info(commande.toString());
+        log.info("fin des tests");
+        Facture facture = factureRepository.findByCommandeId(commande);
+        log.info(facture.toString());
         return facture;
     }
 
