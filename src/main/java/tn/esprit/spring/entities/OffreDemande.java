@@ -25,7 +25,6 @@ public class OffreDemande implements Serializable{
     @JsonIgnore
     @ManyToOne()
     private DemandeAchat demandeAchatId;
-
     private LocalDate dateOD;
     private Integer statusOD;
 }

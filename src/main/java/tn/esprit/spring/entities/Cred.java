@@ -18,7 +18,7 @@ public class Cred implements Serializable{
     private Integer credId;
 
     @JsonIgnore
-    @ManyToOne()
+    @OneToOne
     private User id;
     private String pass;
 }

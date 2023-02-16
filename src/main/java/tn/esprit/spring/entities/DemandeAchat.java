@@ -21,7 +21,6 @@ public class DemandeAchat implements Serializable{
     @JsonIgnore
     @ManyToOne()
     private User userId;
-
     private String titreDA;
     private String descDA;
     private LocalDate datePublication;

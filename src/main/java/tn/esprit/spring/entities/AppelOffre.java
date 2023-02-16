@@ -21,7 +21,6 @@ public class AppelOffre implements Serializable{
     @JsonIgnore
     @ManyToOne()
     private User userId;
-
     private String titreAppelOffre;
     private String descAppelOffre;
     private LocalDate datePublication;

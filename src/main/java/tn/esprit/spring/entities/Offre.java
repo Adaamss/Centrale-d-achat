@@ -25,7 +25,6 @@ public class Offre implements Serializable{
     @JsonIgnore
     @ManyToOne()
     private User userId;
-
     private String descOffre;
     private LocalDate dateOffre;
     private Integer etatOffre;
