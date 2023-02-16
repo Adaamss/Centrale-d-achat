@@ -37,14 +37,6 @@ public class DeliveryImpl implements IDeliveryService {
     }
 
     @Override
-    public void CancelDelivery(Retour retour, Integer livraisonId) {
-        Livraison livraison = deliveryRepository.findById(livraisonId).orElse(null);
-        livraison.setEtatLivraison(-1);
-        deliveryRepository.save(livraison);
-        retourRepository.save(retour);
-    }
-
-    @Override
     public List<Livraison> getDeliveries(){
         List<Livraison> listDeliveries = deliveryRepository.findAll();
         return listDeliveries;
@@ -64,11 +56,6 @@ public class DeliveryImpl implements IDeliveryService {
             }
         }
         return listDeliveries;
-    }
-    @Override
-    public List<Retour> getCanceledDeliveries(){
-        List<Retour> listCanceledDeliveries = retourRepository.findAll();
-        return listCanceledDeliveries;
     }
 
 }

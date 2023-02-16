@@ -9,9 +9,7 @@ import java.util.List;
 public interface IDeliveryService {
     public void addDelivery (Livraison livraison);
     public void EditDelivery (Livraison livraison, Integer livraisonId);
-    public void CancelDelivery (Retour retour, Integer livraisonId);
     public List<Livraison> getDeliveries();
     public List<Livraison> getDeliveriesByDate(String dateFrom, String dateTo);
-    public List<Retour> getCanceledDeliveries();
 }
 

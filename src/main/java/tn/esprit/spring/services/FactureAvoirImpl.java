@@ -7,7 +7,7 @@ import tn.esprit.spring.entities.Commande;
 import tn.esprit.spring.entities.Facture;
 import tn.esprit.spring.entities.FactureAvoir;
 import tn.esprit.spring.entities.User;
-import tn.esprit.spring.interfaces.IFactureService;
+import tn.esprit.spring.interfaces.IFactureAvoirService;
 import tn.esprit.spring.repositories.CommandeRepository;
 import tn.esprit.spring.repositories.FactureAvoirRepository;
 import tn.esprit.spring.repositories.FactureRepository;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class FactureImpl implements IFactureService {
+public class FactureAvoirImpl implements IFactureAvoirService {
 
     @Autowired
     PaiementRepository paiementRepository;
@@ -28,84 +28,57 @@ public class FactureImpl implements IFactureService {
 
     @Autowired
     FactureRepository factureRepository;
+
     @Autowired
     CommandeRepository commandeRepository;
+
     @Override
-    public void addFacture(Facture facture) {
+    public void addFactureAvoir(FactureAvoir factureAvoir,Integer idFacture) {
+        FactureAvoir fa = factureAvoir;
+        Facture facture = factureRepository.findById(idFacture).orElse(null);
+        fa.setFactureId(facture);
+        facture.setEtatFacture(-1);
         factureRepository.save(facture);
+        factureAvoirRepository.save(fa);
     }
 
     @Override
-    public List<Facture> getFacturesByDate(String dateFrom, String dateTo){
-        List<Facture> listFactures = null;
-        List<Facture> factureTmp = null;
+    public List<FactureAvoir> getFacturesAvoir(){
+        List<FactureAvoir> listFacturesAvoir = factureAvoirRepository.findAll();
+        return listFacturesAvoir;
+    }
+
+    @Override
+    public Integer countFacturesAvoirByDate(String dateFrom, String dateTo){
+        List<FactureAvoir> listFacturesAvoir = null;
+        List<FactureAvoir> factureAvTmp = null;
         LocalDate startDate = LocalDate.parse(dateFrom);
         LocalDate endDate = LocalDate.parse(dateTo);
         for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
         {
-            factureTmp = factureRepository.findByDateFacturation(date);
-            for (Facture facture : factureTmp){
-                listFactures.add(facture);
+            factureAvTmp = factureAvoirRepository.findByDateFacturationAvoir(date);
+            for (FactureAvoir factureAvoir : factureAvTmp){
+                listFacturesAvoir.add(factureAvoir);
             }
         }
-        return listFactures;
+        return listFacturesAvoir.size();
     }
 
     @Override
-    public Facture getFactureById(Integer factureId){
-        Facture facture = factureRepository.findById(factureId).orElse(null);
-        return facture;
-    }
-    @Override
-    public Facture getFactureByCommande(Commande commande){
-        Facture facture = factureRepository.findByCommandeId(commande.getCommandeId());
-        return facture;
-    }
-
-    @Override
-    public List<Facture> getFacturesByUser(User user){
-        Facture facture;
-        List<Facture> listFactures = null;
-        List<Commande> listCmd = commandeRepository.findByUserId(user.getUserId());
-        for(Commande cmd:listCmd){
-            facture = factureRepository.findById(cmd.getCommandeId()).orElse(null);
-            listFactures.add(facture);
-        }
-        return listFactures;
-    }
-
-    @Override
-    public Facture getFactureByFactureAvoir(FactureAvoir factureAvoir){
-        Facture facture = factureRepository.findById(factureAvoir.getFactureId().getFactureId()).orElse(null);
-        return facture;
-    }
-
-    @Override
-    public List<Facture> getFactures(){
-        List<Facture> listFactures = factureRepository.findAll();
-        return listFactures;
-    }
-
-   /* @Override
-    public Float getGainsByDate(String dateFrom, String dateTo){
-        Float gains= Float.valueOf(0);
-        List<Facture> listFactures = null;
-        List<Facture> factureTmp = null;
+    public List<FactureAvoir> getFacturesAvoirByDate(String dateFrom, String dateTo){
+        List<FactureAvoir> listFacturesAvoir = null;
+        List<FactureAvoir> factureAvTmp = null;
         LocalDate startDate = LocalDate.parse(dateFrom);
         LocalDate endDate = LocalDate.parse(dateTo);
         for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1))
         {
-            factureTmp = factureRepository.findByDateFacturation(date);
-            for (Facture facture : factureTmp){
-                listFactures.add(facture);
+            factureAvTmp = factureAvoirRepository.findByDateFacturationAvoir(date);
+            for (FactureAvoir factureAvoir : factureAvTmp){
+                listFacturesAvoir.add(factureAvoir);
             }
         }
-        for(Facture f:listFactures){
-            gains=f.
-        }
-        return listFactures;
-    }*/
-
+        return listFacturesAvoir;
+    }
 
 
    //@Scheduled(fixedRate = 300000) ou bien
